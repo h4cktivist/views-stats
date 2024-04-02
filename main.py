@@ -19,5 +19,10 @@ def get_db():
 
 
 @app.post('/users/', response_model=schemas.User)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return services.create_user(db=db, user=user)
+
+
+@app.post('/users/login')
+async def login(login_data: schemas.UserCreate, db: Session = Depends(get_db)):
+    return services.login(db=db, login_data=login_data)
