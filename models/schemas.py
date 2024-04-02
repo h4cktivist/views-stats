@@ -12,3 +12,7 @@ class User(BaseModel):
 class UserCreate(BaseModel):
     username: str
     password: str
+
+
+class LinksList(BaseModel):
+    links: list[str]
