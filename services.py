@@ -8,6 +8,8 @@ from decouple import config
 from models import models, schemas
 
 
+tasks_in_background = []
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
 
 
