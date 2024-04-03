@@ -9,14 +9,20 @@ HEADERS = {
 }
 
 
+def get_bg_task_by_url(post_url):
+    for task in services.tasks_in_background:
+        if task['link'] == post_url:
+            return task
+
+
 def parse_views_vk(post_url):
+    task = get_bg_task_by_url(post_url)
+    task['status'] = 'in progress'
     try:
         html = requests.get(post_url, headers=HEADERS).text
         soup = BeautifulSoup(html, 'html.parser')
         views_div = soup.find('div', class_='like_views like_views--inActionPanel')
-        for task in services.tasks_in_background:
-            if task['link'] == post_url:
-                task['views'] = int(views_div.get('title').split()[0])
-                task['status'] = 'done'
+        task['views'] = int(views_div.get('title').split()[0])
+        task['status'] = 'done'
     except:
-        services.tasks_in_background[0]['status'] = 'failed'
+        task['status'] = 'failed'
